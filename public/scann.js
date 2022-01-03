@@ -1,4 +1,5 @@
 var _scannerIsRunning = false;
+var myId = "91ff9bc2-7001-46cb-83a8-61bbdef5f4d1";
 
 function startScanner() {
     Quagga.init({
@@ -96,7 +97,7 @@ function startScanner() {
     Quagga.onDetected(function(result) {
         console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
         document.getElementsByName("codigo").value = result.codeResult.code;
-        Quagga.stop();
+
     });
 }
 
@@ -109,3 +110,30 @@ document.getElementById("btn").addEventListener("click", function() {
         startScanner();
     }
 }, false);
+
+
+
+function registrarItem() {
+    var nombre = document.getElementById("nombre").value;
+    var precio = document.getElementById("precio").value;
+    var itemId = document.getElementById("codigo").value;
+    var cantidad = document.getElementById("cantidad").value;
+    var url = 'http://localhost:3000/item/register';
+    var data = {
+        userId: myId,
+        nombre: nombre,
+        precio: precio,
+        itemId: itemId,
+        cantidad: cantidad
+    };
+    console.log(data);
+    fetch(url, {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => console.log('Success:', response));
+}
